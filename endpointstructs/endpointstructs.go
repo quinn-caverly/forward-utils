@@ -23,18 +23,18 @@ type UniqueProductExpanded struct {
 // can have multiple colors added to the site at different dates
 // ColorAttr can also uniquely identify the filesystem location if we also have the brand and product Id
 type ColorAttr struct {
-	colorName   string
-	dateScraped string
+	ColorName   string
+	DateScraped string
 }
 
 type ProductContainerForFrontend struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
-	imageImgs []image.Image
+	ImageImgs []image.Image
 }
 
 type ProductContainerForWritingToDB struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
-	imageURLs []string
+	ImageURLs []string
 }
