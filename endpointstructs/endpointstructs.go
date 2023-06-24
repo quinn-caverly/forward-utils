@@ -27,6 +27,11 @@ type ColorAttr struct {
 	DateScraped string
 }
 
+type UniqueColorIdentifier struct {
+    Upi UniqueProductIdentifier
+    ColorAttr ColorAttr
+}
+
 type ProductContainerForFrontend struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
