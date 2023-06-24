@@ -27,15 +27,25 @@ type ColorAttr struct {
 	DateScraped string
 }
 
+type ColorContainer struct {
+	ColorAttr ColorAttr
+	ImageImgs []image.Image
+}
+
 type UniqueColorIdentifier struct {
-    Upi UniqueProductIdentifier
-    ColorAttr ColorAttr
+	Upi       UniqueProductIdentifier
+	ColorAttr ColorAttr
 }
 
 type ProductContainerForFrontend struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
 	ImageImgs []image.Image
+}
+
+type ProductDisplayContainer struct {
+	Upe             UniqueProductExpanded
+	ColorContainers []ColorContainer
 }
 
 type ProductContainerForWritingToDB struct {
