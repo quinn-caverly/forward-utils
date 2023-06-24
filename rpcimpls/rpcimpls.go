@@ -4,11 +4,8 @@ import (
     "net"
 )
 
-func CallToGoReadPod() {
-
-}
-
-func CreateGoReadPodListener() (net.Listener, error) {
+// this enables the ports which pods are listening on to be visible from one lcoation
+func CreatePodListener() (net.Listener, error) {
     listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
         return nil, err
@@ -16,3 +13,5 @@ func CreateGoReadPodListener() (net.Listener, error) {
 
     return listener, nil
 }
+
+
