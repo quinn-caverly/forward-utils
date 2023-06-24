@@ -1,11 +1,7 @@
 package rpcimpls
 
 import (
-    "log"
     "net"
-    "net/rpc"
-
-    "utils/endpointstructs"
 )
 
 func CallToGoReadPod() {
