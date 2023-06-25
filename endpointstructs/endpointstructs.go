@@ -32,6 +32,11 @@ type ColorContainer struct {
 	ImageImgs []image.Image
 }
 
+type URLColorContainer struct {
+    ColorAttr ColorAttr
+    ImageURLs []string
+}
+
 type UniqueColorIdentifier struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
