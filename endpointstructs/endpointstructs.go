@@ -19,7 +19,7 @@ type UniqueProductExpanded struct {
 	Price          string
 	Description    string
 	ClothingType   string // tee, shorts, sweats, etc.
-	ColorAttrs     []ColorAttr
+	URLColorContainers []URLColorContainer
 }
 
 // dateScraped is an attribute of the Color not of the product because the same product
