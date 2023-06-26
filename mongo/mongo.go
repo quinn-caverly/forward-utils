@@ -24,7 +24,7 @@ func CreateConnToBrand(brand string) (*mongo.Collection, error) {
 // a) if the id already exists in the db, check if any of the colors are not currently added.
 // b) if id not in db, write all the colors
 // returned are the colors which need to be written to the filesystem.
-func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) ([]endpointstructs.ColorAttr, error) {
+func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) ([]endpointstructs.URLColorContainer, error) {
 
 	var result endpointstructs.UniqueProductExpanded
 	err := coll.FindOne(
@@ -38,21 +38,21 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 			return nil, fmt.Errorf("Error when inserting into mongo %w", err)
 		}
 
-		return pc.ColorAttrs, nil
+		return pc.URLColorContainers, nil
 	} else {
 
-		toAdd := []endpointstructs.ColorAttr{}
-    	outerLoop:
-    		for i := range pc.ColorAttrs {
-    			for j := range result.ColorAttrs {
-    				if pc.ColorAttrs[i].ColorName == result.ColorAttrs[j].ColorName {
-    					continue outerLoop
-    				}
-    			}
-    			toAdd = append(toAdd, pc.ColorAttrs[i])
-    		}
+		toAdd := []endpointstructs.URLColorContainer{}
+	outerLoop:
+		for i := range pc.URLColorContainers {
+			for j := range result.URLColorContainers {
+				if pc.URLColorContainers[i].ColorAttr.ColorName == result.URLColorContainers[j].ColorAttr.ColorName {
+					continue outerLoop
+				}
+			}
+			toAdd = append(toAdd, pc.URLColorContainers[i])
+		}
 
-		result.ColorAttrs = append(result.ColorAttrs, toAdd...)
+		result.URLColorContainers= append(result.URLColorContainers, toAdd...)
 
 		//TODO it would be preferable to use Update here but inserting structs isnt well documented as far as I know
 		_, err := coll.ReplaceOne(context.Background(), bson.D{{Key: "_id", Value: pc.Id}}, result)
