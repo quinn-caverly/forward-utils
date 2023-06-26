@@ -15,11 +15,12 @@ func CreatePodListener() (net.Listener, error) {
 	return listener, nil
 }
 
-func ConnectToGoWritePod() (*rpc.Client, error) {
+func ConnectToGoWritePod(serviceMethod *string) (*rpc.Client, error) {
 	client, err := rpc.Dial("tcp", "go-write-service:8080")
 	if err != nil {
         return nil, err
 	}
 
+    *serviceMethod = "WriteService.Write"
     return client, err
 }
