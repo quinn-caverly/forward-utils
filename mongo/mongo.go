@@ -13,7 +13,7 @@ import (
 func CreateConnToBrand(brand string) (*mongo.Collection, error) {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
 	if err != nil {
-        return nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
+		return nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
 	}
 	defer client.Disconnect(context.Background())
 	collection := client.Database("products").Collection(brand)
@@ -23,7 +23,32 @@ func CreateConnToBrand(brand string) (*mongo.Collection, error) {
 
 // a) if the id already exists in the db, check if any of the colors are not currently added.
 // b) if id not in db, write all the colors
-// the return are the colors which need to be written to the filesystem.
-func WriteUPE(pc endpointstructs.UniqueProductExpanded, coll *mongo.Collection) error {
+// returned are the colors which need to be written to the filesystem.
+func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) (endpointstructs.URLColorContainer, error) {
 
+	var result bson.M
+	err := coll.FindOne(
+		context.TODO(),
+		bson.D{{Key: "_id", Value: pc.Id}},
+	).Decode(&result)
+
+	if err == mongo.ErrNoDocuments {
+		colors := map[string]string{}
+		for _, val := range pc.URLColorContainers {
+			colors[val.ColorAttr.ColorName] = val.ColorAttr.DateScraped
+		}
+
+        doc := bson.D{
+			{Key: "_id", Value: awi.product.id},
+			{Key: "name", Value: awi.product.name},
+			{Key: "href", Value: awi.product.href},
+			{Key: "price", Value: awi.product.price},
+			{Key: "collection", Value: awi.product.collection},
+			{Key: "description", Value: awi.product.description},
+			{Key: "colors", Value: colors},
+		}
+
+	} else {
+
+	}
 }
