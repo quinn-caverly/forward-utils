@@ -26,26 +26,40 @@ func CreateConnToBrand(brand string) (*mongo.Collection, error) {
 // returned are the colors which need to be written to the filesystem.
 func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) ([]endpointstructs.ColorAttr, error) {
 
-	var result bson.M
+	var result endpointstructs.UniqueProductExpanded
 	err := coll.FindOne(
 		context.TODO(),
 		bson.D{{Key: "_id", Value: pc.Id}},
 	).Decode(&result)
 
 	if err == mongo.ErrNoDocuments {
-		colors := map[string]string{}
-		for _, val := range pc.URLColorContainers {
-			colors[val.ColorAttr.ColorName] = val.ColorAttr.DateScraped
-		}
-
 		_, err = coll.InsertOne(context.TODO(), pc)
 		if err != nil {
 			return nil, fmt.Errorf("Error when inserting into mongo %w", err)
 		}
 
 		return pc.ColorAttrs, nil
-
 	} else {
 
+		toAdd := []endpointstructs.ColorAttr{}
+    	outerLoop:
+    		for i := range pc.ColorAttrs {
+    			for j := range result.ColorAttrs {
+    				if pc.ColorAttrs[i].ColorName == result.ColorAttrs[j].ColorName {
+    					continue outerLoop
+    				}
+    			}
+    			toAdd = append(toAdd, pc.ColorAttrs[i])
+    		}
+
+		result.ColorAttrs = append(result.ColorAttrs, toAdd...)
+
+		//TODO it would be preferable to use Update here but inserting structs isnt well documented as far as I know
+		_, err := coll.ReplaceOne(context.Background(), bson.D{{Key: "_id", Value: pc.Id}}, result)
+		if err != nil {
+			return nil, fmt.Errorf("Error when replacing struct with updated ColorAttrs %w", err)
+		}
+
+		return toAdd, nil
 	}
 }
