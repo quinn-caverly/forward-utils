@@ -10,13 +10,13 @@ type UniqueProductIdentifier struct {
 }
 
 type UniqueProductExpanded struct {
-	Brand          string
-	Id             string
-	UrlOnBrandSite string
-	Price          string
-	Description    string
-	ClothingType   string // tee, shorts, sweats, etc.
-	ColorAttrs     []ColorAttr
+	Brand           string
+	Id              string
+	UrlOnBrandSite  string
+	Price           string
+	Description     string
+	ClothingType    string // tee, shorts, sweats, etc.
+	URLColorContainers []URLColorContainer
 }
 
 // dateScraped is an attribute of the Color not of the product because the same product
@@ -33,8 +33,8 @@ type ColorContainer struct {
 }
 
 type URLColorContainer struct {
-    ColorAttr ColorAttr
-    ImageURLs []string
+	ColorAttr ColorAttr
+	ImageURLs []string
 }
 
 type UniqueColorIdentifier struct {
