@@ -1,6 +1,8 @@
 package endpointstructs
 
-import "image"
+import (
+	"image"
+)
 
 // /data/<brand>/<date_scraped>/<product id>/<color>/ then indexed from 0 to n for each picture there is of that color
 
@@ -10,14 +12,14 @@ type UniqueProductIdentifier struct {
 }
 
 type UniqueProductExpanded struct {
-	Brand              string
-	Id                 string
-	Name               string
-	UrlOnBrandSite     string
-	Price              string
-	Description        string
-	ClothingType       string // tee, shorts, sweats, etc.
-	URLColorContainers []URLColorContainer
+	Id             string `bson:"_id"`
+	Brand          string
+	Name           string
+	UrlOnBrandSite string
+	Price          string
+	Description    string
+	ClothingType   string // tee, shorts, sweats, etc.
+	ColorAttrs     []ColorAttr
 }
 
 // dateScraped is an attribute of the Color not of the product because the same product

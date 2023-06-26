@@ -24,7 +24,7 @@ func CreateConnToBrand(brand string) (*mongo.Collection, error) {
 // a) if the id already exists in the db, check if any of the colors are not currently added.
 // b) if id not in db, write all the colors
 // returned are the colors which need to be written to the filesystem.
-func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) (endpointstructs.URLColorContainer, error) {
+func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection) ([]endpointstructs.ColorAttr, error) {
 
 	var result bson.M
 	err := coll.FindOne(
@@ -38,15 +38,12 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 			colors[val.ColorAttr.ColorName] = val.ColorAttr.DateScraped
 		}
 
-        doc := bson.D{
-			{Key: "_id", Value: awi.product.id},
-			{Key: "name", Value: awi.product.name},
-			{Key: "href", Value: awi.product.href},
-			{Key: "price", Value: awi.product.price},
-			{Key: "collection", Value: awi.product.collection},
-			{Key: "description", Value: awi.product.description},
-			{Key: "colors", Value: colors},
+		_, err = coll.InsertOne(context.TODO(), pc)
+		if err != nil {
+			return nil, fmt.Errorf("Error when inserting into mongo %w", err)
 		}
+
+		return pc.ColorAttrs, nil
 
 	} else {
 
