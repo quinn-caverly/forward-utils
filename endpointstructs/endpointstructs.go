@@ -62,7 +62,7 @@ type UniqueColorIdentifier struct {
 }
 
 type ProductDisplayContainer struct {
-	Upe             UniqueProductExpanded
+	Up             UniqueProduct
 	ColorContainers []ColorContainer
 }
 
