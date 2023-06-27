@@ -6,12 +6,18 @@ import (
 
 // /data/<brand>/<date_scraped>/<product id>/<color>/ then indexed from 0 to n for each picture there is of that color
 
+// brands are defined using an enum so that I dont accidentally do something like "Stussy" instead of "stussy"
+const (
+	stussy = iota
+	huf    = iota
+)
+
 type UniqueProductIdentifier struct {
 	Brand string
 	Id    string
 }
 
-type UniqueProductExpanded struct {
+type UniqueProduct struct {
 	Id             string `bson:"_id"`
 	Brand          string
 	Name           string
@@ -19,6 +25,16 @@ type UniqueProductExpanded struct {
 	Price          string
 	Description    string
 	ClothingType   string // tee, shorts, sweats, etc.
+}
+
+type UniqueProductExpanded struct {
+	Id                 string `bson:"_id"`
+	Brand              string
+	Name               string
+	UrlOnBrandSite     string
+	Price              string
+	Description        string
+	ClothingType       string // tee, shorts, sweats, etc.
 	URLColorContainers []URLColorContainer
 }
 
@@ -43,12 +59,6 @@ type URLColorContainer struct {
 type UniqueColorIdentifier struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
-}
-
-type ProductContainerForFrontend struct {
-	Upi       UniqueProductIdentifier
-	ColorAttr ColorAttr
-	ImageImgs []image.Image
 }
 
 type ProductDisplayContainer struct {
