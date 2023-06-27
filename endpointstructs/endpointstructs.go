@@ -8,8 +8,8 @@ import (
 
 // brands are defined using an enum so that I dont accidentally do something like "Stussy" instead of "stussy"
 const (
-	stussy = iota
-	huf    = iota
+	stussy = "stussy"
+	huf    = "huf"
 )
 
 type UniqueProductIdentifier struct {
