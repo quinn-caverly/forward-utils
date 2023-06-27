@@ -66,6 +66,12 @@ type ProductDisplayContainer struct {
 	ColorContainers []ColorContainer
 }
 
+type ProductContainerForFrontend struct {
+	Upi       UniqueProductIdentifier
+	ColorAttr ColorAttr
+	ImageImgs []image.Image
+}
+
 type ProductContainerForWritingToDB struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
