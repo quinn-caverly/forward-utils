@@ -52,7 +52,7 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 			toAdd = append(toAdd, pc.URLColorContainers[i])
 		}
 
-		result.URLColorContainers= append(result.URLColorContainers, toAdd...)
+		result.URLColorContainers = append(result.URLColorContainers, toAdd...)
 
 		//TODO it would be preferable to use Update here but inserting structs isnt well documented as far as I know
 		_, err := coll.ReplaceOne(context.Background(), bson.D{{Key: "_id", Value: pc.Id}}, result)
@@ -62,4 +62,21 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 
 		return toAdd, nil
 	}
+}
+
+func ReadUPE(id string, coll *mongo.Collection) (endpointstructs.UniqueProductExpanded, error) {
+
+	var result endpointstructs.UniqueProductExpanded
+	err := coll.FindOne(
+		context.TODO(),
+		bson.D{{Key: "_id", Value: id}},
+	).Decode(&result)
+
+    if err == mongo.ErrNoDocuments {
+        return endpointstructs.UniqueProductExpanded{}, fmt.Errorf(fmt.Sprint("The given id: ", id, " is not in the database of the ", coll.Name(), " collection, "), err)
+    } else if err != nil {
+        return endpointstructs.UniqueProductExpanded{}, err
+    }
+
+    return result, nil
 }
