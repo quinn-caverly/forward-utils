@@ -55,7 +55,7 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 		result.URLColorContainers = append(result.URLColorContainers, toAdd...)
 
 		//TODO it would be preferable to use Update here but inserting structs isnt well documented as far as I know
-		_, err := coll.ReplaceOne(context.TODO(), bson.D{{Key: "_id", Value: pc.Id}}, result)
+		_, err := coll.ReplaceOne(context.TODO(), bson.M{"_id": pc.Id}, result)
 		if err != nil {
 			return nil, fmt.Errorf("Error when replacing struct with updated ColorAttrs %w", err)
 		}
