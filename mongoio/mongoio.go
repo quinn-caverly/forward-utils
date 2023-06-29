@@ -10,14 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func CreateConnToBrand(brand string) (*mongo.Collection, error) {
+func CreateConnToBrand(brand string) (*mongo.Collection, *mongo.Client, error) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
 	if err != nil {
-		return nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
+		return nil, nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
 	}
 	collection := client.Database("products").Collection(brand)
 
-	return collection, nil
+	return collection, client, nil
 }
 
 // a) if the id already exists in the db, check if any of the colors are not currently added.
