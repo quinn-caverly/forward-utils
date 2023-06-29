@@ -11,11 +11,10 @@ import (
 )
 
 func CreateConnToBrand(brand string) (*mongo.Collection, error) {
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
 	if err != nil {
 		return nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
 	}
-	defer client.Disconnect(context.Background())
 	collection := client.Database("products").Collection(brand)
 
 	return collection, nil
