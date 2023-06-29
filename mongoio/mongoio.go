@@ -39,7 +39,9 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 		}
 
 		return pc.URLColorContainers, nil
-	} else {
+	} else if err != nil {
+        return nil, fmt.Errorf("Error when attempting to find document of id in collection, %w", err)
+    } else {
 
 		toAdd := []endpointstructs.URLColorContainer{}
 	outerLoop:
