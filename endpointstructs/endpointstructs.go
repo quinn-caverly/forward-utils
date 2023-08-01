@@ -1,9 +1,5 @@
 package endpointstructs
 
-import (
-	"image"
-)
-
 // /data/<brand>/<date_scraped>/<product id>/<color>/ then indexed from 0 to n for each picture there is of that color
 
 // brands are defined using an enum so that I dont accidentally do something like "Stussy" instead of "stussy"
@@ -48,7 +44,7 @@ type ColorAttr struct {
 
 type ColorContainer struct {
 	ColorAttr ColorAttr
-	ImageImgs []image.Image
+	ImageImgs []byte
 }
 
 type URLColorContainer struct {
@@ -69,7 +65,7 @@ type ProductDisplayContainer struct {
 type ProductContainerForFrontend struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
-	ImageImgs []image.Image
+	ImageImgs []byte
 }
 
 type ProductContainerForWritingToDB struct {

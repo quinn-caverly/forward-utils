@@ -10,6 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+func CreateConnToDatabase() (*mongo.Client, error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
+	if err != nil {
+		return nil, nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
+	}
+
+}
+
 func CreateConnToBrand(brand string) (*mongo.Collection, *mongo.Client, error) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
 	if err != nil {
@@ -39,8 +47,8 @@ func WriteUPE(pc *endpointstructs.UniqueProductExpanded, coll *mongo.Collection)
 
 		return pc.URLColorContainers, nil
 	} else if err != nil {
-        return nil, fmt.Errorf("Error when attempting to find document of id in collection, %w", err)
-    } else {
+		return nil, fmt.Errorf("Error when attempting to find document of id in collection, %w", err)
+	} else {
 
 		toAdd := []endpointstructs.URLColorContainer{}
 	outerLoop:
@@ -73,11 +81,11 @@ func ReadUPE(id string, coll *mongo.Collection) (endpointstructs.UniqueProductEx
 		bson.D{{Key: "_id", Value: id}},
 	).Decode(&result)
 
-    if err == mongo.ErrNoDocuments {
-        return endpointstructs.UniqueProductExpanded{}, fmt.Errorf(fmt.Sprint("The given id: ", id, " is not in the database of the ", coll.Name(), " collection, "), err)
-    } else if err != nil {
-        return endpointstructs.UniqueProductExpanded{}, err
-    }
+	if err == mongo.ErrNoDocuments {
+		return endpointstructs.UniqueProductExpanded{}, fmt.Errorf(fmt.Sprint("The given id: ", id, " is not in the database of the ", coll.Name(), " collection, "), err)
+	} else if err != nil {
+		return endpointstructs.UniqueProductExpanded{}, err
+	}
 
-    return result, nil
+	return result, nil
 }
