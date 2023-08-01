@@ -44,7 +44,7 @@ type ColorAttr struct {
 
 type ColorContainer struct {
 	ColorAttr ColorAttr
-	ImageImgs [][]byte
+	ImageBytes [][]byte
 }
 
 type URLColorContainer struct {
@@ -65,7 +65,7 @@ type ProductDisplayContainer struct {
 type ProductContainerForFrontend struct {
 	Upi       UniqueProductIdentifier
 	ColorAttr ColorAttr
-	ImageImgs [][]byte
+	ImageBytes [][]byte
 }
 
 type ProductContainerForWritingToDB struct {
