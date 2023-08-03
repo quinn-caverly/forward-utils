@@ -13,9 +13,9 @@ import (
 func CreateConnToDatabase() (*mongo.Client, error) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://mongo-service:27017"))
 	if err != nil {
-		return nil, nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
+		return nil, fmt.Errorf("Was not able to connect to mongo via the service %w", err)
 	}
-
+    return client, err
 }
 
 func CreateConnToBrand(brand string) (*mongo.Collection, *mongo.Client, error) {
